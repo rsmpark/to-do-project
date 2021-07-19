@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { Button, TextField, Dialog, DialogContent, DialogActions } from '@material-ui/core';
 import db from '../firebase-config';
+import { TodoContext } from '../context/TodoContext';
 
 export default function UpdateTodo(props) {
   const [updatedTodo, setUpdatedTodo] = useState(props.todo);
+  const todoCtx = useContext(TodoContext);
+
+  let selectedTodo = todoCtx.todos.find((todo) => {
+    return todo.id === props.todo.id;
+  });
+
+  console.log(selectedTodo);
 
   useEffect(() => {
     setUpdatedTodo(props.todo);
@@ -28,7 +36,10 @@ export default function UpdateTodo(props) {
           fullWidth
           name='updateTodo'
           value={updatedTodo.name}
-          onChange={(event) => setUpdatedTodo({ ...updatedTodo, name: event.target.val })}
+          onChange={(event) => {
+            debugger;
+            setUpdatedTodo({ ...updatedTodo, name: event.target.val });
+          }}
         />
       </DialogContent>
       <DialogActions>

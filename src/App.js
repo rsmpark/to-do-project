@@ -5,13 +5,17 @@ import { Container } from '@material-ui/core';
 import AddTodo from './components/AddTodo';
 import TodoList from './components/TodoList';
 
+import { TodoProvider } from './context/TodoContext';
+
 function App() {
   return (
     <Container maxWidth='sm'>
-      <form noValidate>
-        <AddTodo />
+      <TodoProvider>
+        <form noValidate>
+          <AddTodo />
+        </form>
         <TodoList />
-      </form>
+      </TodoProvider>
     </Container>
   );
 }

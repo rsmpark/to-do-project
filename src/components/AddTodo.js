@@ -1,22 +1,13 @@
-import React, { useState } from 'react';
-
-import db from '../firebase-config';
-import firebase from 'firebase';
+import React, { useState, useContext } from 'react';
 
 import { AddCircleOutlineRounded } from '@material-ui/icons';
-
 import { Button, TextField } from '@material-ui/core';
+
+import { TodoContext } from '../context/TodoContext';
 
 const AddTodo = (props) => {
   const [input, setInput] = useState('');
-
-  const addTodo = (event) => {
-    db.collection('todos').add({
-      todo: input,
-      datetime: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-    setInput('');
-  };
+  const todoCtx = useContext(TodoContext);
 
   return (
     <div>
@@ -39,9 +30,9 @@ const AddTodo = (props) => {
         color='primary'
         fullWidth
         onClick={(event) => {
-          debugger;
           event.preventDefault();
-          addTodo(input);
+          todoCtx.addTodo(input);
+          setInput('');
         }}
         disabled={!input}
         startIcon={<AddCircleOutlineRounded />}>
