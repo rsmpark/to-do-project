@@ -61,6 +61,22 @@ function App() {
     setOpen(false);
   };
 
+  const editTodo = () => {
+    db.collection('todos').doc(toUpdateId).update({
+      todo: update,
+    });
+    setOpen(false);
+  };
+
+  const deleteTodo = (id) => {
+    db.collection('todos')
+      .doc(id)
+      .delete()
+      .then((res) => {
+        console.log('Deleted!', res);
+      });
+  };
+
   return (
     <Container maxWidth='sm'>
       <form noValidate>
