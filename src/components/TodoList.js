@@ -22,7 +22,7 @@ export default function TodoList() {
             return {
               id: doc.id,
               name: doc.data().todo,
-              datetime: doc.data().datatime,
+              datetime: doc.data().datetime.toDate(),
             };
           })
         );
@@ -51,7 +51,7 @@ export default function TodoList() {
       <List dense={true}>
         {todos.map((todo) => (
           <ListItem key={todo.id}>
-            <ListItemText primary={todo.name} secondary={todo.datetime} />
+            <ListItemText primary={todo.name} secondary={todo.datetime.toLocaleString()} />
             <ListItemSecondaryAction>
               <IconButton edge='end' aria-label='Edit' onClick={() => openUpdateDialog(todo)}>
                 <Edit />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { Button, TextField, Dialog, DialogContent, DialogActions } from '@material-ui/core';
 import db from '../firebase-config';
@@ -28,7 +28,9 @@ export default function UpdateTodo(props) {
           fullWidth
           name='updateTodo'
           value={updatedTodo.name}
-          onChange={(event) => setUpdatedTodo({ ...updatedTodo, name: event.target.val })}
+          onChange={(event) => {
+            setUpdatedTodo({ ...updatedTodo, name: event.target.value });
+          }}
         />
       </DialogContent>
       <DialogActions>
