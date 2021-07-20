@@ -1,55 +1,52 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 import { Button, TextField, Dialog, DialogContent, DialogActions } from '@material-ui/core';
-import db from '../firebase-config';
 import { TodoContext } from '../context/TodoContext';
 
 export default function UpdateTodo(props) {
-  const [updatedTodo, setUpdatedTodo] = useState(props.todo);
   const todoCtx = useContext(TodoContext);
+  let selectedTodo = todoCtx.todos[props.selectedIdx];
 
-  let selectedTodo = todoCtx.todos.find((todo) => {
-    return todo.id === props.todo.id;
-  });
-
-  console.log(selectedTodo);
+  const [todoName, setTodoName] = useState('');
 
   useEffect(() => {
-    setUpdatedTodo(props.todo);
-  }, [props.todo]);
+    console.log('useEffect');
+    setTodoName(selectedTodo ? selectedTodo.name : '');
+  }, [selectedTodo]);
 
-  const editTodo = () => {
-    db.collection('todos').doc(updatedTodo.id).update({
-      todo: updatedTodo.name,
-    });
-    props.close();
-  };
-
-  return (
-    <Dialog open={props.open} onClose={props.close}>
-      <DialogContent>
-        <TextField
-          autoFocus
-          margin='normal'
-          label='Update Todo'
-          type='text'
-          fullWidth
-          name='updateTodo'
-          value={updatedTodo.name}
-          onChange={(event) => {
-            debugger;
-            setUpdatedTodo({ ...updatedTodo, name: event.target.val });
-          }}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.close} color='primary'>
-          Cancel
-        </Button>
-        <Button color='primary' onClick={editTodo}>
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+  if (todoCtx.todos.length > 0) {
+    return (
+      <Dialog open={props.open} onClose={props.close}>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin='normal'
+            label='Update Todo'
+            type='text'
+            fullWidth
+            name='updateTodo'
+            value={todoName}
+            onChange={(event) => {
+              setTodoName(event.target.value);
+            }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.close} color='primary'>
+            Cancel
+          </Button>
+          <Button
+            color='primary'
+            onClick={() => {
+              todoCtx.editTodo(selectedTodo.id, todoName);
+              props.close();
+            }}>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  } else {
+    return <div>Loading</div>;
+  }
 }

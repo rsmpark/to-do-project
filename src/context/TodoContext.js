@@ -3,7 +3,11 @@ import { useState, useEffect, createContext } from 'react';
 import db from '../firebase-config';
 import firebase from 'firebase';
 
-export const TodoContext = createContext();
+export const TodoContext = createContext({
+  todos: [],
+  deleteTodo: (id) => {},
+  addTodo: (input) => {},
+});
 
 export const TodoProvider = (props) => {
   const [todos, setTodos] = useState([]);
@@ -40,10 +44,17 @@ export const TodoProvider = (props) => {
       });
   };
 
+  const editTodo = (id, name) => {
+    db.collection('todos').doc(id).update({
+      todo: name,
+    });
+  };
+
   const todoContext = {
     todos: todos,
     deleteTodo: deleteTodo,
     addTodo: addTodo,
+    editTodo: editTodo,
   };
 
   return <TodoContext.Provider value={todoContext}>{props.children}</TodoContext.Provider>;

@@ -8,12 +8,12 @@ import { TodoContext } from '../context/TodoContext';
 
 export default function TodoList() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedTodo, setSelectedTodo] = useState({});
+  const [selectedIdx, setSelectedIdx] = useState(0);
   const todoCtx = useContext(TodoContext);
 
-  const openUpdateDialog = (todo) => {
+  const openUpdateDialog = (idx) => {
     setIsOpen(true);
-    setSelectedTodo(todo);
+    setSelectedIdx(idx);
   };
 
   const handleClose = () => {
@@ -22,11 +22,11 @@ export default function TodoList() {
   return (
     <div>
       <List dense={true}>
-        {todoCtx.todos.map((todo) => (
+        {todoCtx.todos.map((todo, idx) => (
           <ListItem key={todo.id}>
             <ListItemText primary={todo.name} secondary={todo.datetime.toLocaleString()} />
             <ListItemSecondaryAction>
-              <IconButton edge='end' aria-label='Edit' onClick={() => openUpdateDialog(todo)}>
+              <IconButton edge='end' aria-label='Edit' onClick={() => openUpdateDialog(idx)}>
                 <Edit />
               </IconButton>
               <IconButton edge='end' aria-label='delete' onClick={() => todoCtx.deleteTodo(todo.id)}>
@@ -36,7 +36,7 @@ export default function TodoList() {
           </ListItem>
         ))}
       </List>
-      <UpdateTodo open={isOpen} close={handleClose} todo={selectedTodo} />
+      <UpdateTodo open={isOpen} close={handleClose} selectedIdx={selectedIdx} />
     </div>
   );
 }
