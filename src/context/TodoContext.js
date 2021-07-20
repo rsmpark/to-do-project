@@ -10,7 +10,7 @@ export const TodoContext = createContext({
 });
 
 export const TodoProvider = (props) => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState([{ id: '', name: '', datetime: new Date() }]);
 
   useEffect(() => {
     db.collection('todos')
