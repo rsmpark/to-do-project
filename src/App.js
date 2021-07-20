@@ -26,6 +26,7 @@ function App() {
   const [update, setUpdate] = useState('');
   const [toUpdateId, setToUpdateId] = useState('');
 
+  // Get data from firestore
   useEffect(() => {
     db.collection('todos')
       .orderBy('datetime', 'desc')
@@ -42,6 +43,7 @@ function App() {
       });
   }, []);
 
+  // Add todo to firestore
   const addTodo = (event) => {
     event.preventDefault();
     db.collection('todos').add({
@@ -51,16 +53,19 @@ function App() {
     setInput('');
   };
 
+  // Open dialog to update todo
   const openUpdateDialog = (todo) => {
     setOpen(true);
     setToUpdateId(todo.id);
     setUpdate(todo.name);
   };
 
+  // Close dialog
   const handleClose = () => {
     setOpen(false);
   };
 
+  // Update todo to firestore
   const editTodo = () => {
     db.collection('todos').doc(toUpdateId).update({
       todo: update,
@@ -68,6 +73,7 @@ function App() {
     setOpen(false);
   };
 
+  // Delete todo from firestore
   const deleteTodo = (id) => {
     db.collection('todos')
       .doc(id)
