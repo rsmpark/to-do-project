@@ -35,7 +35,7 @@ function App() {
             return {
               id: doc.id,
               name: doc.data().todo,
-              datatime: doc.data().datatime,
+              datetime: doc.data().datetime.toDate(),
             };
           })
         );
@@ -59,6 +59,25 @@ function App() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const editTodo = () => {
+    db.collection('todos').doc(toUpdateId).update({
+      todo: update,
+    });
+    setOpen(false);
+  };
+
+  const deleteTodo = (id) => {
+    db.collection('todos')
+      .doc(id)
+      .delete()
+      .then((res) => {
+        console.log('Delete successful!');
+      })
+      .catch((err) => {
+        console.log(`Error occurred: ${err}`);
+      });
   };
 
   return (
@@ -92,7 +111,7 @@ function App() {
       <List dense={true}>
         {todos.map((todo) => (
           <ListItem key={todo.id}>
-            <ListItemText primary={todo.name} secondary={todo.datetime} />
+            <ListItemText primary={todo.name} secondary={todo.datetime.toString()} />
 
             <ListItemSecondaryAction>
               <IconButton edge='end' aria-label='Edit' onClick={() => openUpdateDialog(todo)}>
@@ -123,7 +142,11 @@ function App() {
           <Button onClick={handleClose} color='primary'>
             Cancel
           </Button>
-          <Button onClick={editTodo} color='primary'>
+          <Button
+            onClick={() => {
+              editTodo();
+            }}
+            color='primary'>
             Save
           </Button>
         </DialogActions>
