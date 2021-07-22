@@ -39,7 +39,6 @@ const AddTodo = (props) => {
         color='primary'
         fullWidth
         onClick={(event) => {
-          debugger;
           event.preventDefault();
           addTodo(input);
         }}

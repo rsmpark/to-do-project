@@ -22,7 +22,7 @@ export default function TodoList() {
             return {
               id: doc.id,
               name: doc.data().todo,
-              datetime: doc.data().datetime.toDate(),
+              datetime: doc.metadata.hasPendingWrites ? new Date() : doc.data().datetime.toDate(),
             };
           })
         );
