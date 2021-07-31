@@ -4,7 +4,7 @@ import db from '../firebase-config';
 import firebase from 'firebase';
 
 export const TodoContext = createContext({
-  todos: [],
+  todos: [{ id: '', name: '', datetime: new Date() }],
   deleteTodo: (id) => {},
   addTodo: (input) => {},
 });
@@ -16,15 +16,17 @@ export const TodoProvider = (props) => {
     db.collection('todos')
       .orderBy('datetime', 'desc')
       .onSnapshot((snapshot) => {
-        setTodos(
-          snapshot.docs.map((doc) => {
-            return {
-              id: doc.id,
-              name: doc.data().todo,
-              datetime: snapshot.metadata.hasPendingWrites ? new Date() : doc.data().datetime.toDate(),
-            };
-          })
-        );
+        if (snapshot.docs.length > 0) {
+          setTodos(
+            snapshot.docs.map((doc) => {
+              return {
+                id: doc.id,
+                name: doc.data().todo,
+                datetime: snapshot.metadata.hasPendingWrites ? new Date() : doc.data().datetime.toDate(),
+              };
+            })
+          );
+        }
       });
   }, []);
 

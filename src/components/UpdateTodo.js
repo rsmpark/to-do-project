@@ -10,7 +10,6 @@ export default function EditTodo(props) {
   const [todoName, setTodoName] = useState('');
 
   useEffect(() => {
-    console.log('useEffect');
     setTodoName(selectedTodo.name);
   }, [selectedTodo]);
 
